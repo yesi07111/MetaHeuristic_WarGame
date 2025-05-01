@@ -1,0 +1,37 @@
+[
+    {
+        "unit_type": "knight",
+        "weapon": "diamond",
+        "armour": "steel",
+        "level": 3,
+        "name": "Snicklefritz"
+    },
+    {
+        "unit_type": "swordman",
+        "weapon": "steel",
+        "armour": "wood",
+        "level": 4,
+        "name": "Whiskers"
+    },
+    {
+        "unit_type": "swordman",
+        "weapon": "steel",
+        "armour": "wood",
+        "level": 3,
+        "name": "Squishy"
+    },
+    {
+        "unit_type": "archer",
+        "weapon": "diamond",
+        "armour": "wood",
+        "level": 1,
+        "name": "Whiskers"
+    },
+    {
+        "unit_type": "archer",
+        "weapon": "diamond",
+        "armour": "wood",
+        "level": 2,
+        "name": "Waffles"
+    }
+]

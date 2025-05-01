@@ -1,0 +1,281 @@
+{
+  "units": {
+    "peasant": {
+      "cost": 1,
+      "atk": 1,
+      "dmg": [1, 2],
+      "def": 1,
+      "hp": 1,
+      "spd": 1,
+      "ran": 1
+    },
+    "swordman": {
+      "cost": 5,
+      "atk": 10,
+      "dmg": [4, 5],
+      "def": 5,
+      "hp": 10,
+      "spd": 10,
+      "ran": 5
+    },
+    "spearman": {
+      "cost": 5,
+      "atk": 7,
+      "dmg": [4, 5],
+      "def": 3,
+      "hp": 10,
+      "spd": 10,
+      "ran": 10
+    },
+    "archer": {
+      "cost": 8,
+      "atk": 10,
+      "dmg": [2, 7],
+      "def": 1,
+      "hp": 3,
+      "spd": 10,
+      "ran": 200
+    },
+    "defender": {
+      "cost": 10,
+      "atk": 1,
+      "dmg": [1, 2],
+      "def": 15,
+      "hp": 20,
+      "spd": 1,
+      "ran": 1
+    },
+    "horseman": {
+      "cost": 10,
+      "atk": 10,
+      "dmg": [3, 6],
+      "def": 5,
+      "hp": 10,
+      "spd": 30,
+      "ran": 20
+    },
+    "sniper": {
+      "cost": 20,
+      "atk": 30,
+      "dmg": [0, 20],
+      "def": 1,
+      "hp": 1,
+      "spd": 1,
+      "ran": 800
+    },
+    "knight": {
+      "cost": 20,
+      "atk": 15,
+      "dmg": [5, 10],
+      "def": 10,
+      "hp": 15,
+      "spd": 30,
+      "ran": 20
+    },
+    "elefant": {
+      "cost": 40,
+      "atk": 20,
+      "dmg": [10, 20],
+      "def": 20,
+      "hp": 35,
+      "spd": 20,
+      "ran": 30
+    }
+  },
+  "weapon": {
+    "peasant": {
+      "wood": 1,
+      "steel": 2,
+      "diamond": 3
+    },
+    "swordman": {
+      "wood": 5,
+      "steel": 10,
+      "diamond": 15
+    },
+    "spearman": {
+      "wood": 5,
+      "steel": 10,
+      "diamond": 15
+    },
+    "archer": {
+      "wood": 10,
+      "steel": 15,
+      "diamond": 20
+    },
+    "defender": {
+      "wood": 1,
+      "steel": 2,
+      "diamond": 3
+    },
+    "horseman": {
+      "wood": 15,
+      "steel": 20,
+      "diamond": 25
+    },
+    "sniper": {
+      "wood": 20,
+      "steel": 40,
+      "diamond": 60
+    },
+    "knight": {
+      "wood": 20,
+      "steel": 40,
+      "diamond": 60
+    },
+    "elefant": {
+      "wood": 40,
+      "steel": 80,
+      "diamond": 120
+    }
+  },
+  "armour": {
+    "peasant": {
+      "wood": 1,
+      "steel": 2,
+      "diamond": 3
+    },
+    "swordman": {
+      "wood": 2,
+      "steel": 6,
+      "diamond": 9
+    },
+    "spearman": {
+      "wood": 2,
+      "steel": 6,
+      "diamond": 9
+    },
+    "archer": {
+      "wood": 1,
+      "steel": 2,
+      "diamond": 3
+    },
+    "defender": {
+      "wood": 20,
+      "steel": 40,
+      "diamond": 60
+    },
+    "horseman": {
+      "wood": 8,
+      "steel": 12,
+      "diamond": 20
+    },
+    "sniper": {
+      "wood": 1,
+      "steel": 2,
+      "diamond": 3
+    },
+    "knight": {
+      "wood": 20,
+      "steel": 40,
+      "diamond": 60
+    },
+    "elefant": {
+      "wood": 40,
+      "steel": 80,
+      "diamond": 120
+    }
+  },
+  "names":{
+    "name1" : "Patroclo",
+    "name2" : "Barnabas",
+    "name3" : "Ziggy Stardust",
+    "name4" : "Giggles",
+    "name5" : "Sassafras",
+    "name6" : "Bumblebee",
+    "name7" : "Snickerdoodle",
+    "name8" : "Fizzgig",
+    "name9" : "Jellybean",
+    "name10" : "Toodles",
+    "name11" : "Banjo",
+    "name12" : "Quirk",
+    "name13" : "Muffin",
+    "name14" : "Waffles",
+    "name15" : "Noodle",
+    "name16" : "Pickle",
+    "name17" : "Sprinkles",
+    "name18" : "Whiskers",
+    "name19" : "Squiggle",
+    "name20" : "Biscuit",
+    "name21" : "Snoozy",
+    "name22" : "Mr. Bumble",
+    "name23" : "Chuckles",
+    "name24" : "Gumbo",
+    "name25" : "Taco",
+    "name26" : "Skipper",
+    "name27" : "Fiddlesticks",
+    "name28" : "Nugget",
+    "name29" : "Zany",
+    "name30" : "Doodlebug",
+    "name31" : "Squishy",
+    "name32" : "Pudding",
+    "name33" : "Razzle",
+    "name34" : "Bonkers",
+    "name35" : "Scrumptious",
+    "name36" : "Flapjack",
+    "name37" : "Wobble",
+    "name38" : "Mischief",
+    "name39" : "Wigglebot",
+    "name40" : "Sugarpants",
+    "name41" : "Bamboozle",
+    "name42" : "Whippersnapper",
+    "name43" : "Silly Billy",
+    "name44" : "Flibbertigibbet",
+    "name45" : "Scootch",
+    "name46" : "Cupcake",
+    "name47" : "Beanie",
+    "name48" : "Noodlehead",
+    "name49" : "Snugglebutt",
+    "name50" : "Doodle Dandy",
+    "name51" : "Bubblegum",
+    "name52" : "Bananas",
+    "name53" : "Snoozer",
+    "name54" : "Cheeky Chimp",
+    "name55" : "Pepperoni",
+    "name56" : "Gigglepants",
+    "name57" : "Quibble",
+    "name58" : "Snickerdoodle",
+    "name59" : "Wiggle Worm",
+    "name60" : "Squishy",
+    "name61" : "Whiskerface",
+    "name62" : "Flapdoodle",
+    "name63" : "Merryberry",
+    "name64" : "Giggly Goo",
+    "name65" : "Tinkerbell",
+    "name66" : "Silly Goose",
+    "name67" : "Noodle Noggin",
+    "name68" : "Bumble Bop",
+    "name69" : "Snicklefritz",
+    "name70" : "Tootsie",
+    "name71" : "Wobblebottom",
+    "name72" : "Scooter",
+    "name73" : "Boingo",
+    "name74" : "Doodlebug",
+    "name75" : "Jellybean",
+    "name76" : "Pickleberry",
+    "name77" : "Knickerbocker",
+    "name78" : "Razzmatazz",
+    "name79" : "Snickerdoodle",
+    "name80" : "Bippity Bop",
+    "name81" : "Zigzag",
+    "name82" : "Sassafras",
+    "name83" : "Banana Split",
+    "name84" : "Whippersnap",
+    "name85" : "Fiddlesticks",
+    "name86" : "Zippity Doo",
+    "name87" : "Fergus Fluffernutter",
+    "name88" : "Penelope Pumpernickel", 
+    "name89" : "Reginald Wobblewhiskers", 
+    "name90" : "Millicent McGigglesnort", 
+    "name91" : "Archibald Blubberknickers", 
+    "name92" : "Winifred Pizzapants", 
+    "name93" : "Montgomery Wobblebottom", 
+    "name94" : "Tabitha McSnickerdoodle", 
+    "name95" : "Eustace Flapdoodle", 
+    "name96" : "Clementine Wobblewhiskers", 
+    "name97" : "Winston McSquiggles", 
+    "name98" : "Matilda Tootsiewoo", 
+    "name99" : "Humphrey Butterbean", 
+    "name100" : "Dolores Crumpet"
+  }
+}
