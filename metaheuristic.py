@@ -1,18 +1,39 @@
+import json
+import os
 import random
 import subprocess
 import sys
 from typing import List
-from metawars_api import Unit, army_cost
+from metawars_api import (
+    Unit, 
+    army_cost,
+    UNITY_TYPES,  
+    WEAPON_TYPES,  
+    ARMOUR_TYPES   
+)
 from goal_function import generate_target_armies
 
+def install_rust_module():
+    """Instala el módulo Rust precompilado desde el wheel"""
+    wheel_path = os.path.join(os.path.dirname(__file__), "compiled", "rust_simulator-0.1.0-cp311-none-win_amd64.whl")
+    
+    try:
+        subprocess.run([
+            sys.executable, "-m", "pip", "install", 
+            "--force-reinstall", "--no-index", "--find-links", "compiled",
+            "rust_simulator"
+        ], check=True)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(
+            f"Error instalando módulo Rust. Ejecuta manualmente:\n"
+            f"pip install {wheel_path}"
+        ) from e
+
 try:
-    import rust_simulator
+    import rust_simulator # type: ignore
 except ImportError:
-    print("Compiling Rust module...")
-    subprocess.run([
-        sys.executable, "-m", "maturin", "develop", "--release"
-    ], check=True)
-    import rust_simulator
+    install_rust_module()
+    import rust_simulator # type: ignore
 
 class GeneticAlgorithm:
     """Implementa un algoritmo genético para optimizar ejércitos en Meta Wars.
@@ -66,8 +87,12 @@ class GeneticAlgorithm:
         Returns:
             List[Tuple[List[Unit], int]]: Lista ordenada de (ejército, puntuación)
         """
-        serialized = [self.serialize_army(army) for army in population]
-        fitness_scores = rust_simulator.evaluate_armies(serialized, self.target_armies)
+        # Serializar a JSON
+        serialized = json.dumps([self.serialize_army(army) for army in population])
+        target_armies = json.dumps(self.target_armies)
+        
+        # Llamar a Rust con JSON
+        fitness_scores = rust_simulator.evaluate_armies(serialized, target_armies)
         return sorted(zip(population, fitness_scores), key=lambda x: x[1], reverse=True)
         
     def initial_population(self, num_individuals) -> List[List[Unit]]:
@@ -82,12 +107,17 @@ class GeneticAlgorithm:
         population = []
         for _ in range(num_individuals):
             army = []
-            while army_cost(army) < 100000:
-                unit_type = random.choice(Unit.UNITY_TYPES)
-                weapon = random.choice(Unit.WEAPON_TYPES)
-                armour = random.choice(Unit.ARMOUR_TYPES)
-                level = random.randint(1, 20)
-                army.append(Unit(unit_type, weapon, armour, level))
+            max_attempts = 100  # Evitar bucles infinitos
+            while army_cost(army) < 100000 and max_attempts > 0:
+                new_unit = Unit(
+                    unit_type=random.choice(UNITY_TYPES),
+                    weapon=random.choice(WEAPON_TYPES),
+                    armour=random.choice(ARMOUR_TYPES),
+                    level=random.randint(1, 20)
+                )
+                if army_cost(army) + new_unit.cost <= 100000:
+                    army.append(new_unit)
+                max_attempts -= 1
             population.append(army)
         return population
 
@@ -113,16 +143,30 @@ class GeneticAlgorithm:
         Returns:
             List[Unit]: Ejército mutado (puede ser inválido)
         """
+        original_cost = army_cost(army)
+    
         if random.random() < self.mutation_rate:
             idx = random.randint(0, len(army)-1)
-            unit = army[idx]
-            new_unit = Unit(
-                unit_type=random.choice(Unit.UNITY_TYPES),
-                weapon=random.choice(Unit.WEAPON_TYPES),
-                armour=random.choice(Unit.ARMOUR_TYPES),
-                level=unit.level + random.randint(-2, 2)
-            )
-            army[idx] = new_unit
+            original_unit = army[idx]
+            
+            # Intentar máximo 10 mutaciones válidas
+            for _ in range(10):
+                new_level = max(1, original_unit.level + random.randint(-2, 2))
+                new_level = min(new_level, 20)
+                
+                new_unit = Unit(
+                    unit_type=random.choice(UNITY_TYPES),
+                    weapon=random.choice(WEAPON_TYPES),
+                    armour=random.choice(ARMOUR_TYPES),
+                    level=new_level
+                )
+                
+                # Calcular nuevo costo
+                new_cost = original_cost - original_unit.cost + new_unit.cost
+                if new_cost <= 100000:
+                    army[idx] = new_unit
+                    break
+                    
         return army
 
     def evolve(self, ranked_population):
@@ -135,14 +179,20 @@ class GeneticAlgorithm:
             List[List[Unit]]: Nueva población
         """
         elites = [x[0] for x in ranked_population[:self.elite_size]]
-        
+    
         children = []
-        while len(children) < self.pop_size - self.elite_size:
+        max_attempts = 1000  # Prevenir bucles infinitos
+        while len(children) < self.pop_size - self.elite_size and max_attempts > 0:
             parent1, parent2 = random.choices(ranked_population[:10], k=2)
             child = self.breed(parent1[0], parent2[0])
             child = self.mutate(child)
-            if army_cost(child) <= 100000:
+            
+            # Validación estricta de costo
+            total_cost = army_cost(child)
+            if total_cost <= 100000 and total_cost > 0:  # Ejército no vacío
                 children.append(child)
+            max_attempts -= 1
+        
         return elites + children
 
     def serialize_targets(self):
@@ -152,7 +202,20 @@ class GeneticAlgorithm:
             List[List[dict]]: Ejércitos en formato serializado
         """
         return [
-            [unit.__dict__ for unit in army]
+            [{
+                "unit_type": unit.unit_type,
+                "weapon": unit.weapon,
+                "armour": unit.armour,
+                "level": unit.level,
+                "name": unit.name,
+                "attack": unit.attack,
+                "min_damage": unit.min_damage,
+                "max_damage": unit.max_damage,
+                "defense": unit.defense,
+                "hit_points": unit.hit_points,
+                "speed": unit.speed,
+                "atk_range": unit.atk_range
+            } for unit in army]
             for army in generate_target_armies()
         ]
 
@@ -169,8 +232,17 @@ def generate_best_army(iterations=100, pop_size=50):
     ga = GeneticAlgorithm(pop_size=pop_size)
     population = ga.initial_population(pop_size)
     
+    best_army = None
+    best_score = -1
+    
     for _ in range(iterations):
-        ranked = ga.rank_armies(population)
+        ranked = ga.rank_armies(population)  # Lista de (army, fitness)
+        current_best_army, current_best_score = ranked[0]
+        
+        if current_best_score > best_score:
+            best_army = current_best_army
+            best_score = current_best_score
+            
         population = ga.evolve(ranked)
     
-    return max(population, key=lambda x: x[1])[0]
+    return best_army
