@@ -286,7 +286,7 @@ class Unit:
         else:
             self.name = name
 
-        self.cost = self.unit_cost + self.armour_cost + self.unit_cost
+        self.cost = self.unit_cost + self.armour_cost + self.weapon_cost
 
         self.attack = unit_data["atk"] * WPN_MULT[weapon] * (1.2**level)
         self.min_damage = unit_data["dmg"][0] * (1.2**level)
