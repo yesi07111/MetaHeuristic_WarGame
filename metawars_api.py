@@ -447,19 +447,3 @@ def simulation(left_army: List[Unit], right_army: List[Unit], verbose=True, time
     
     sprint(f"Final results: left army {len(left_army)} - {len(right_army)} right army", verbose)
     return (len(left_army), len(right_army))
-
-
-
-
-
-def tu_funcion_con_timeout(tiempo_limite):
-    inicio = time.time()
-    tiempo_actual = 0
-
-    while tiempo_actual < tiempo_limite:
-        # Tu lógica aquí
-        tiempo_actual = time.time() - inicio
-
-        # Si tu condición de salida se cumple, puedes romper el bucle
-        if condicion_de_salida():
-            break
