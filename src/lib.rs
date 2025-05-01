@@ -5,6 +5,7 @@ use rand::{Rng, thread_rng};
 
 /// Representación serializable de una unidad para simulación en Rust
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[serde(rename_all = "snake_case")]
 pub struct PyUnit {
     /// Tipo de unidad (ej: "archer", "knight")
     pub unit_type: String,
@@ -41,7 +42,13 @@ pub struct PyUnit {
 /// # Returns
 /// Vector con número de victorias por cada ejército candidato
 #[pyfunction]
-fn evaluate_armies(py_armies: Vec<Vec<PyUnit>>, target_armies: Vec<Vec<PyUnit>>) -> PyResult<Vec<u32>> {
+fn evaluate_armies(py_armies: &str, target_armies: &str) -> PyResult<Vec<u32>> {
+    let py_armies: Vec<Vec<PyUnit>> = serde_json::from_str(py_armies)
+        .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(format!("Invalid army JSON: {}", e)))?;
+    
+    let target_armies: Vec<Vec<PyUnit>> = serde_json::from_str(target_armies)
+        .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(format!("Invalid target JSON: {}", e)))?;
+
     let results: Vec<u32> = py_armies
         .par_iter()
         .map(|army| {
